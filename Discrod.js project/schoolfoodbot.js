@@ -20,7 +20,7 @@ const mealAsync = async function(msg) {
     if(meal.today == ""){
         msg.channel.send("오늘은 급식이 없습니다.");
     }else{
-        msg.channel.send(meal.today);
+        msg.channel.send("```" + meal.today + "```");
     }
   }
 
