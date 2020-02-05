@@ -3,14 +3,13 @@ const Discord = require('discord.js');
 const config = require('../config.json');
 const client = new Discord.Client();
 const school = new School()
-
 const today = new Date();
 const todayyear = today.getFullYear();
 const todaymonth = today.getMonth()+1;
 const todayday = today.getDate();
 let lee_secret = 0;
 let attack_user = "지우";
-let stauts = "명령어가 궁금 하시면 \"하이의현 명령어\" 를 입력해주세요!"
+let stauts = "명령어가 궁금 하시면 \"하이민준 명령어\" 를 입력해주세요!"
 school.init(School.Type.HIGH, School.Region.GWANGJU, 'F100000120');//120
 
 const mealAsync = async function(msg) {
@@ -53,11 +52,11 @@ client.on('message', msg =>{
     console.log(`author.username = ${msg.author.username}`)
     if((msg.author.username == attack_user) && (lee_secret == 1)){
         msg.channel.send(`${attack_user}아 넌 좀 조용히해`); 
-    }else if(msg.content == '하이의현'){
+    }else if(msg.content == '하이민준'){
         console.log(msg.author.username);
         msg.reply(`안냥!!`);
     }else if(msg.content == '하이의현 명령어'){
-        msg.channel.send("```" + `하이의현 : 의현이가 상큼하게 인사합니다.\n\ngsm일정 : 오늘 하루의 gsm일정을 알려줍니다. \n\ngsm급식 : 오늘의 하루의 gsm급식을 알려줍니다.` + "```");
+        msg.channel.send("```" + `하이민준 : 민준이가 상큼하게 인사합니다.\n\ngsm일정 : 오늘 하루의 gsm일정을 알려줍니다. \n\ngsm급식 : 오늘의 하루의 gsm급식을 알려줍니다.` + "```");
     }
 
     if(msg.content == '하이의현 공격' && (msg.author.username != attack_user)){
