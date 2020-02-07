@@ -42,6 +42,7 @@ const calAsync = async function(msg) {
 }
 
 client.on('message', msg =>{ //급식  일정
+    msg.content = msg.content.replace(/(\s*)/g, "");
     if(msg.content == 'gsm급식' || msg.content == 'GSM급식'){
         //console.log(school.getTargetURL('meal', 2018, 5))
         mealAsync(msg);
@@ -52,6 +53,8 @@ client.on('message', msg =>{ //급식  일정
 });
 
 client.on('message', msg =>{
+    msg.content = msg.content.replace(/(\s*)/g, "");
+    console.log(msg.content);
    if(msg.content == '하이gsm'){
         console.log(msg.author.username);
         msg.reply(`안냥!!`);
