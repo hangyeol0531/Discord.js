@@ -11,6 +11,7 @@ const todaymonth = today.getMonth()+1;
 const todayday = today.getDate();
 var fs = require('fs');
 
+let posthelp = fs.readFileSync('gsmposthelp.txt', 'utf-8');
 let help = fs.readFileSync('schoolbot_help.txt', 'utf-8');
 let stauts = fs.readFileSync('schoolbot_state.txt', 'utf-8');
 school.init(School.Type.HIGH, School.Region.GWANGJU, 'F100000120');//120
@@ -41,27 +42,32 @@ const calAsync = async function(msg) {
     }
 }
 
-client.on('message', msg =>{ //급식  일정
+
+client.on('message', async msg =>{
     msg.content = msg.content.replace(/(\s*)/g, "");
+   if(msg.content == '하이gsm'){
+        console.log(msg.author.username);
+        await msg.reply(`안냥!!`);
+    }else if(msg.content == '하이gsm명령어'){
+        await msg.channel.send(help);
+    }
+    /////////////////////////////////
+
     if(msg.content == 'gsm급식' || msg.content == 'GSM급식'){
         //console.log(school.getTargetURL('meal', 2018, 5))
-        mealAsync(msg);
+        await mealAsync(msg);
     }else if(msg.content == 'gsm일정' || msg.content == 'GSM일정'){ //일정
         //console.log(school.getTargetURL('calendar')) 
-        calAsync(msg);
+        await calAsync(msg);
+    }
+
+    ////////////////////////////
+
+    if(msg.content.slice(0, 5) == 'gsm택배'){
+        await msg.channel.send("택배다 ^^");
     }
 });
 
-client.on('message', msg =>{
-    msg.content = msg.content.replace(/(\s*)/g, "");
-    console.log(msg.content);
-   if(msg.content == '하이gsm'){
-        console.log(msg.author.username);
-        msg.reply(`안냥!!`);
-    }else if(msg.content == '하이gsm 명령어'){
-        msg.channel.send(help);
-    }
-});
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
