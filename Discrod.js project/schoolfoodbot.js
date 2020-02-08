@@ -6,6 +6,11 @@ const client = new Discord.Client();
 const school = new School()
 const today = new Date();
 
+var url = require('url');
+var parsedObject = url.parse('https://tracker.delivery/#/kr.logen/1111111111111');
+const axios = require('axios');
+
+
 const todayyear = today.getFullYear();
 const todaymonth = today.getMonth()+1;
 const todayday = today.getDate();
@@ -23,7 +28,7 @@ const mealAsync = async function(msg) {
     console.log(meal.today);
     console.log(`${meal.month}월 ${meal.day}일`)
     // 오늘 급식 정보
-    if(meal.today == ""){
+    if(meal.today == ""){ㅛ
         msg.channel.send("오늘은 급식이 없습니다.");
     }else{
         msg.channel.send("```" + meal.today + "```");
@@ -48,7 +53,9 @@ client.on('message', async msg =>{
    if(msg.content == '하이gsm'){
         console.log(msg.author.username);
         await msg.reply(`안냥!!`);
-    }else if(msg.content == '하이gsm명령어'){
+    }
+    
+    if(msg.content == '하이gsm명령어'){
         await msg.channel.send(help);
     }
     /////////////////////////////////
@@ -56,16 +63,36 @@ client.on('message', async msg =>{
     if(msg.content == 'gsm급식' || msg.content == 'GSM급식'){
         //console.log(school.getTargetURL('meal', 2018, 5))
         await mealAsync(msg);
-    }else if(msg.content == 'gsm일정' || msg.content == 'GSM일정'){ //일정
+    }
+    
+    if(msg.content == 'gsm일정' || msg.content == 'GSM일정'){ //일정
         //console.log(school.getTargetURL('calendar')) 
         await calAsync(msg);
     }
 
-    ////////////////////////////
-
     if(msg.content.slice(0, 5) == 'gsm택배'){
-        await msg.channel.send("택배다 ^^");
+        var post_number = msg.content.slice(5, 20);
+        await msg.channel.send(`운송장 번호 : ${post_number}`);
+        axios.get(`https://apis.tracker.delivery/carriers/kr.hanjin/tracks/${post_number}`)
+            .then(function (response) {
+            msg.channel.send("성공");
+            console.log(response);
+            msg.channel.send(response);
+            let send_post_message = `현재 상황 : ${config.state.text}`
+        })
+            .catch(function (error) {
+            msg.channel.send("에러");
+            console.log(error);
+            
+        })
+            .finally(function () {
+            // always executed
+        });
+        // parsedObject = url.parse(`https://apis.tracker.delivery/carriers/kr.hanjin/tracks/${post_number}`)
+        // console.log(parsedObject);
+        //await msg.channel.send(parsedObject.href);
     }
+
 });
 
 
