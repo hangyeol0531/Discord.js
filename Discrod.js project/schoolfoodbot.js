@@ -8,7 +8,7 @@ const today = new Date();
 
 var url = require('url');
 var parsedObject = url.parse('https://tracker.delivery/#/kr.logen/1111111111111');
-const axios = require('axios');
+const axios = require('axios').default;
 
 
 const todayyear = today.getFullYear();
@@ -28,7 +28,7 @@ const mealAsync = async function(msg) {
     console.log(meal.today);
     console.log(`${meal.month}월 ${meal.day}일`)
     // 오늘 급식 정보
-    if(meal.today == ""){ㅛ
+    if(meal.today == ""){
         msg.channel.send("오늘은 급식이 없습니다.");
     }else{
         msg.channel.send("```" + meal.today + "```");
@@ -46,6 +46,14 @@ const calAsync = async function(msg) {
         msg.channel.send("```" +`${meal.month}월 ${meal.day}일 일정 \n--------------\n${content}` + "```");
     }
 }
+
+const getpost_information = async function(post_number){
+  try {
+    return await axios.get(`https://apis.tracker.delivery/carriers/kr.hanjin/tracks/${post_number}`);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 
 client.on('message', async msg =>{
@@ -72,25 +80,19 @@ client.on('message', async msg =>{
 
     if(msg.content.slice(0, 5) == 'gsm택배'){
         var post_number = msg.content.slice(5, 20);
-        await msg.channel.send(`운송장 번호 : ${post_number}`);
-        axios.get(`https://apis.tracker.delivery/carriers/kr.hanjin/tracks/${post_number}`)
-            .then(function (response) {
-            msg.channel.send("성공");
-            console.log(response);
-            msg.channel.send(response);
-            let send_post_message = `현재 상황 : ${config.state.text}`
-        })
-            .catch(function (error) {
-            msg.channel.send("에러");
-            console.log(error);
-            
-        })
-            .finally(function () {
-            // always executed
-        });
-        // parsedObject = url.parse(`https://apis.tracker.delivery/carriers/kr.hanjin/tracks/${post_number}`)
-        // console.log(parsedObject);
-        //await msg.channel.send(parsedObject.href);
+        if(!isNaN(post_number)){
+            try{
+                const post_information = await getpost_information(post_number);
+                const post_information_json = JSON.stringify(post_information.data);
+                console.log(post_information_json);
+                console.log(`출력할 부분 : ${post_information_json}`)
+            }catch(error){
+                console.log(error)
+                msg.reply("운송장 번호 확인부탁 ><");
+            }
+        }else{
+            msg.reply("숫자모르심? 숫자만쓰셈^^");
+        }    
     }
 
 });
