@@ -49,7 +49,7 @@ const calAsync = async function(msg) {
 
 const getpost_information = async function(post_number){
   try {
-    return await axios.get(`https://apis.tracker.delivery/carriers/kr.hanjin/tracks/${post_number}`);
+    return await axios.get(post_number);
   } catch (error) {
     console.error(error);
   }
@@ -79,15 +79,26 @@ client.on('message', async msg =>{
     }
 
     if(msg.content.slice(0, 5) == 'gsm택배'){
-        let post_number = msg.content.slice(5, 20);
+        let post_information;
+        let post_name
+        let post_number = msg.content.slice(5, msg.content.length);
         if(!isNaN(post_number)){
             try{
-                const post_information = await getpost_information(post_number);
-                console.log(post_information.data.progresses.length);
+                post_information = await getpost_information(`https://apis.tracker.delivery/carriers/kr.hanjin/tracks/${post_number}`);
+                post_name = "한진택배"
+                if(typeof(post_information) == 'undefined'){
+                    while(true){
+                        post_information = await getpost_information(`https://apis.tracker.delivery/carriers/kr.epost/tracks/${post_number}`);
+                        post_name = "우체국택배"
+                        if(typeof(post_information) != 'undefined') break;
+
+                        break;
+                    }
+                }
                 console.log(post_information.data.progresses[post_information.data.progresses.length - 1].description);
                 let customer_description = post_information.data.progresses[post_information.data.progresses.length - 1].description;
                 let customer_location = post_information.data.progresses[post_information.data.progresses.length - 1].location.name;
-                msg.reply(`현재 장소는 ${customer_location} 에서 ${customer_description}`);
+                msg.reply(`[${post_name}] 현재 장소는 ${customer_location} 에서 ${customer_description}`);
 
             }catch(error){
                 console.log(error)
