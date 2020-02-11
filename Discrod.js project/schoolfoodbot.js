@@ -79,13 +79,14 @@ client.on('message', async msg =>{
     }
 
     if(msg.content.slice(0, 5) == 'gsm택배'){
-        var post_number = msg.content.slice(5, 20);
+        let post_number = msg.content.slice(5, 20);
         if(!isNaN(post_number)){
             try{
                 const post_information = await getpost_information(post_number);
-                const post_information_json = JSON.stringify(post_information.data);
-                console.log(post_information_json);
-                console.log(`출력할 부분 : ${post_information_json}`)
+                console.log(post_information.data.progresses.length);
+                console.log(post_information.data.progresses[post_information.data.progresses.length - 1].description);
+                msg.reply(post_information.data.progresses[post_information.data.progresses.length - 1].description)
+
             }catch(error){
                 console.log(error)
                 msg.reply("운송장 번호 확인부탁 ><");
@@ -110,7 +111,7 @@ client.login(config.token)
 msg.author.avatarURL 상대방의 이미지 주소를 가져옴
 msg.author 를 쓰면 언급을 하지만 뒤에 .username 을 붙이면 언급을 안함
 msg.reply 상대방을 언급하며 대화를 날림
-msg.channel.send 보통 대화₩
+msg.channel.send 보통 대화
 */
 
 
