@@ -85,7 +85,9 @@ client.on('message', async msg =>{
                 const post_information = await getpost_information(post_number);
                 console.log(post_information.data.progresses.length);
                 console.log(post_information.data.progresses[post_information.data.progresses.length - 1].description);
-                msg.reply(post_information.data.progresses[post_information.data.progresses.length - 1].description)
+                let customer_description = post_information.data.progresses[post_information.data.progresses.length - 1].description;
+                let customer_location = post_information.data.progresses[post_information.data.progresses.length - 1].location.name;
+                msg.reply(`현재 장소는 ${customer_location} 에서 ${customer_description}`);
 
             }catch(error){
                 console.log(error)
