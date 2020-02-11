@@ -88,9 +88,22 @@ client.on('message', async msg =>{
                 post_name = "한진택배"
                 if(typeof(post_information) == 'undefined'){
                     while(true){
+                        //우체국
                         post_information = await getpost_information(`https://apis.tracker.delivery/carriers/kr.epost/tracks/${post_number}`);
                         post_name = "우체국택배"
                         if(typeof(post_information) != 'undefined') break;
+
+
+                        //CJ대한통운
+                        post_information = await getpost_information(`https://apis.tracker.delivery/carriers/kr.cjlogistics/tracks/${post_number}`);
+                        post_name = "CJ대한통운"
+                        if(typeof(post_information) != 'undefined') break;
+
+                        //CJ대한통운
+                        post_information = await getpost_information(`https://apis.tracker.delivery/carriers/kr.logen/tracks/${post_number}`);
+                        post_name = "로젠"
+                        if(typeof(post_information) != 'undefined') break;
+                        
 
                         break;
                     }
