@@ -86,6 +86,9 @@ client.on('message', async msg =>{
             try{
                 post_information = await getpost_information(`https://apis.tracker.delivery/carriers/kr.hanjin/tracks/${post_number}`);
                 post_name = "한진택배"
+                if(post_information.data){// 만약 데이터가 메세지밖에없다면
+                    //다음 get방식으로 데이터를 불러와 처리 
+                }
                 if(typeof(post_information) == 'undefined'){
                     while(true){
                         //우체국
