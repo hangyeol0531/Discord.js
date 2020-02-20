@@ -88,8 +88,7 @@ client.on('message', async msg =>{
                 post_name = "한진택배"
                 if(post_information.data){// 만약 데이터가 메세지밖에없다면
                     //다음 get방식으로 데이터를 불러와 처리
-                    //Data가 안불러와짐..
-                    //전기를 합격해서 기분이좋다!!      
+                    //Data가 안불러와짐..  
                 }
                 if(typeof(post_information) == 'undefined'){
                     while(true){
