@@ -16,9 +16,9 @@ const todaymonth = today.getMonth()+1;
 const todayday = today.getDate();
 var fs = require('fs');
 
-let posthelp = fs.readFileSync('gsmposthelp.txt', 'utf-8');
-let help = fs.readFileSync('schoolbot_help.txt', 'utf-8');
-let stauts = fs.readFileSync('schoolbot_state.txt', 'utf-8');
+let posthelp = fs.readFileSync('gsmbot_contents/gsmposthelp.txt', 'utf-8');
+let help = fs.readFileSync('gsmbot_contents/schoolbot_help.txt', 'utf-8');
+let stauts = fs.readFileSync('gsmbot_contents/schoolbot_state.txt', 'utf-8');
 school.init(School.Type.HIGH, School.Region.GWANGJU, 'F100000120');//120
 
 const mealAsync = async function(msg) {
@@ -107,8 +107,6 @@ client.on('message', async msg =>{
                         post_information = await getpost_information(`https://apis.tracker.delivery/carriers/kr.logen/tracks/${post_number}`);
                         post_name = "로젠"
                         if(typeof(post_information) != 'undefined') break;
-                        
-
                         break;
                     }
                 }
