@@ -11,6 +11,7 @@ client.on('message', msg => {
     let check_array = [ ];
   if (msg.content.slice(0,3) === '검준식') {
     console.log("검준식 가동");
+    msg.content = msg.content.toUpperCase();
     check_cotent = msg.content.slice(3, msg.content.length+1);
     console.log(check_cotent);
     
