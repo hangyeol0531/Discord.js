@@ -35,8 +35,8 @@ client.on('message', msg => {
         check_array.push('식');
     }
     console.log(check_array);
-    if(check_array == ''){
-        msg.reply("깨끗한 엄입니다.");
+    if(check_array == ''){ 
+        msg.reply("깨끗한 문장입니다.");
     }else{
         msg.reply(`${check_array}은 살아있다.`);
     }
