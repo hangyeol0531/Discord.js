@@ -13,7 +13,7 @@ var db = mysql.createConnection({
 
 
 client.on('message', async msg => {
-  if(msg.channel.name.includes('bot') ){
+  if(msg.channel.name.includes('낸객') ){
     if(msg.content.includes('!참가')){
       var player_count;
       var sql = `SELECT * FROM user_information`
@@ -30,7 +30,7 @@ client.on('message', async msg => {
                   await db.query(sql, async function(err, rows){
                       if(!err) {
                           console.log("입력 성공");
-                          msg.reply(`"${msg.author.username}"으로 정상적으로 등록되었습니다. (8/${player_count})`)
+                          msg.reply(`"${msg.author.username}"으로 정상적으로 등록되었습니다. (${player_count} / 8)`)
                       }else{
                           console.log(err);
                       }   
@@ -43,11 +43,33 @@ client.on('message', async msg => {
               }   
           })
         }else{
-          msg.reply(`사람이 가득 찼습니다!! (8/${player_count - 1})`)
+          msg.reply(`사람이 가득 찼습니다!! (${player_count - 1}/8)`)
         }
         }else{
             console.log(err);
         }   
+      })
+    }
+
+    if(msg.content.includes('!취소')){
+      var sql = `SELECT * FROM user_information where discord_id = "${msg.author.id}"`
+      await db.query(sql, async function(err, rows){
+        if(!err){
+          if(rows[0]){
+            sql = `DELETE FROM user_information where discord_id = "${msg.author.id}"`
+            await db.query(sql, async function(err, rows){
+              if(!err){
+                msg.reply('취소되었습니다.')
+              }else{
+                console.log(err)
+              }
+            })
+          }else{
+            msg.reply('이미 참여하지 않는 선수입니다.');
+          }
+        }else{
+          console.log(err);
+        }
       })
     }
   
